@@ -1,0 +1,588 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Everen — Your right-hand assistant for modern leadership</title>
+  <meta name="description" content="Everen cuts through the noise of Outlook and Teams so leaders know what matters, what needs action, and what can wait." />
+
+  <style>
+    :root{
+      --bg: #0b0f17;
+      --card: rgba(255,255,255,.06);
+      --card2: rgba(255,255,255,.04);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.68);
+      --faint: rgba(255,255,255,.48);
+      --line: rgba(255,255,255,.12);
+      --brand: #6ee7ff;
+      --brand2:#a78bfa;
+      --ok: #34d399;
+      --warn:#fbbf24;
+      --shadow: 0 18px 55px rgba(0,0,0,.45);
+      --radius: 18px;
+      --max: 1080px;
+    }
+
+    *{ box-sizing: border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: radial-gradient(1200px 800px at 15% 0%, rgba(167,139,250,.22), transparent 55%),
+                  radial-gradient(900px 700px at 85% 15%, rgba(110,231,255,.20), transparent 55%),
+                  linear-gradient(180deg, #070a10 0%, #0b0f17 45%, #070a10 100%);
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    a{ color: inherit; text-decoration: none; }
+    .wrap{
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 28px 18px 60px;
+    }
+
+    /* Top nav */
+    .top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+    .logo{
+      display:flex;
+      align-items:center;
+      gap: 12px;
+      font-weight: 750;
+      letter-spacing: .3px;
+    }
+    .mark{
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(110,231,255,.95), rgba(167,139,250,.95));
+      box-shadow: 0 12px 30px rgba(110,231,255,.10);
+      position: relative;
+      overflow: hidden;
+    }
+    .mark:before{
+      content:"";
+      position:absolute;
+      inset:-20%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.65), transparent 40%);
+      transform: rotate(12deg);
+    }
+    .nav{
+      display:flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      align-items:center;
+      justify-content:flex-end;
+    }
+    .nav a{
+      color: var(--muted);
+      font-size: 14px;
+      padding: 8px 10px;
+      border-radius: 10px;
+    }
+    .nav a:hover{
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+    }
+
+    /* Hero */
+    .hero{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 18px;
+      align-items: stretch;
+      margin-top: 10px;
+    }
+    @media (max-width: 920px){
+      .hero{ grid-template-columns: 1fr; }
+    }
+
+    .panel{
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+    }
+    .kicker{
+      display:inline-flex;
+      gap: 10px;
+      align-items:center;
+      padding: 7px 12px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 14px;
+    }
+    .dot{
+      width: 8px; height: 8px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--brand), var(--brand2));
+      box-shadow: 0 0 0 6px rgba(110,231,255,.08);
+    }
+
+    h1{
+      margin: 0 0 10px;
+      font-size: clamp(34px, 4.4vw, 54px);
+      line-height: 1.06;
+      letter-spacing: -0.8px;
+    }
+    .sub{
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 16.5px;
+      max-width: 62ch;
+    }
+
+    .ctaRow{
+      display:flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items:center;
+      margin-top: 10px;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      cursor:pointer;
+      font-weight: 650;
+      font-size: 14.5px;
+      transition: transform .08s ease, background .15s ease, border-color .15s ease;
+      user-select:none;
+    }
+    .btnPrimary{
+      background: linear-gradient(135deg, rgba(110,231,255,.98), rgba(167,139,250,.98));
+      color: #071018;
+      border-color: transparent;
+      box-shadow: 0 10px 28px rgba(110,231,255,.16);
+    }
+    .btnPrimary:hover{ transform: translateY(-1px); }
+    .btnGhost{
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+    }
+    .btnGhost:hover{
+      background: rgba(255,255,255,.08);
+      transform: translateY(-1px);
+    }
+
+    .heroNote{
+      margin-top: 14px;
+      color: var(--faint);
+      font-size: 13px;
+    }
+
+    /* Problem list */
+    .problem{
+      margin-top: 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+    }
+    .problem h3{
+      margin: 0 0 8px;
+      font-size: 16px;
+      letter-spacing: -.2px;
+    }
+    .bullets{
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+    }
+    .bullets li{ margin: 6px 0; }
+
+    /* Right column card */
+    .cardTitle{
+      margin: 0 0 12px;
+      font-size: 16px;
+      color: var(--text);
+      letter-spacing: -.2px;
+    }
+    .featureGrid{
+      display:grid;
+      gap: 10px;
+    }
+    .feature{
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 14px;
+      padding: 12px;
+    }
+    .feature b{
+      display:block;
+      margin-bottom: 4px;
+      font-size: 14px;
+    }
+    .feature p{
+      margin: 0;
+      color: var(--muted);
+      font-size: 13.5px;
+    }
+
+    /* Sections */
+    section{
+      margin-top: 18px;
+      padding: 0;
+    }
+    .grid2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+    @media (max-width: 920px){
+      .grid2{ grid-template-columns: 1fr; }
+    }
+
+    .mini{
+      background: rgba(255,255,255,.035);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+    }
+    .mini h2{
+      margin: 0 0 8px;
+      font-size: 18px;
+      letter-spacing: -.3px;
+    }
+    .mini p{
+      margin: 0;
+      color: var(--muted);
+      font-size: 14.5px;
+    }
+
+    .pillRow{
+      display:flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .pill{
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      font-size: 12.5px;
+    }
+
+    /* Example */
+    .example{
+      margin-top: 18px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      padding: 18px;
+    }
+    .example h2{
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+    .timeline{
+      display:grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .step{
+      display:flex;
+      gap: 12px;
+      align-items:flex-start;
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+    }
+    .badge{
+      min-width: 40px;
+      height: 28px;
+      border-radius: 999px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight: 750;
+      font-size: 12.5px;
+      color:#081018;
+      background: linear-gradient(135deg, rgba(110,231,255,.95), rgba(167,139,250,.95));
+    }
+    .step p{
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* Comparison */
+    .compare{
+      margin-top: 18px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+    @media (max-width: 920px){
+      .compare{ grid-template-columns: 1fr; }
+    }
+    .compareCard{
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.035);
+      padding: 18px;
+    }
+    .compareCard h3{
+      margin: 0 0 8px;
+      font-size: 16px;
+    }
+    .compareCard ul{
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+    }
+    .compareCard li{ margin: 6px 0; }
+
+    /* Form */
+    .form{
+      margin-top: 18px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      padding: 18px;
+    }
+    form{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+    @media (max-width: 760px){
+      form{ grid-template-columns: 1fr; }
+    }
+    label{
+      display:block;
+      font-size: 12.5px;
+      color: var(--faint);
+      margin-bottom: 6px;
+    }
+    input, textarea, select{
+      width: 100%;
+      padding: 12px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(10,14,22,.65);
+      color: var(--text);
+      outline: none;
+    }
+    input:focus, textarea:focus, select:focus{
+      border-color: rgba(110,231,255,.55);
+      box-shadow: 0 0 0 4px rgba(110,231,255,.10);
+    }
+    textarea{ min-height: 110px; resize: vertical; }
+    .full{ grid-column: 1 / -1; }
+
+    .footer{
+      margin-top: 22px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--faint);
+      font-size: 13px;
+      display:flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 12px;
+      align-items:center;
+    }
+    .tiny{
+      color: var(--faint);
+      font-size: 12.5px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header class="top">
+      <div class="logo">
+        <div class="mark" aria-hidden="true"></div>
+        <div>
+          Everen <span style="color:var(--faint); font-weight:600;">• Landing Page</span>
+        </div>
+      </div>
+      <nav class="nav" aria-label="Primary">
+        <a href="#what">What it does</a>
+        <a href="#example">Example</a>
+        <a href="#compare">Vs Copilot</a>
+        <a href="#feedback">Feedback</a>
+      </nav>
+    </header>
+
+    <main>
+      <div class="hero">
+        <div class="panel">
+          <div class="kicker">
+            <span class="dot" aria-hidden="true"></span>
+            Your right-hand assistant for modern leadership
+          </div>
+
+          <h1>Everen cuts through the noise of Outlook and Teams.</h1>
+          <p class="sub">
+            Leaders shouldn’t need a second brain just to stay on top of messages.
+            Everen prioritizes what matters, highlights what needs action, and safely deprioritizes what can wait.
+          </p>
+
+          
+          <p class="heroNote">
+            Not another chatbot. Not a novelty. A working assistant that starts productive on day one.
+          </p>
+
+          <div class="problem">
+            <h3>The problem (aka: your Monday morning)</h3>
+            <ul class="bullets">
+              <li>1,000+ unread emails</li>
+              <li>30+ Teams messages</li>
+              <li>Mentions, FYIs, approvals, escalations… all mixed together</li>
+            </ul>
+            <p class="tiny" style="margin-top:10px;">
+              Copilot can help you respond. Everen helps you decide what matters first.
+            </p>
+          </div>
+        </div>
+
+        <aside class="panel">
+          <h2 class="cardTitle" id="what">What Everen does</h2>
+          <div class="featureGrid">
+            <div class="feature">
+              <b>Smart prioritization</b>
+              <p>Detects questions, decisions, approvals, escalations, and true FYIs—automatically.</p>
+            </div>
+            <div class="feature">
+              <b>Context-aware ranking</b>
+              <p>Uses sender, role, urgency signals, and your rules—not just keywords.</p>
+            </div>
+            <div class="feature">
+              <b>Action-ready summaries</b>
+              <p>Clear summaries so you don’t read entire threads to understand the ask.</p>
+            </div>
+            <div class="feature">
+              <b>Optional “Done List” mode</b>
+              <p>Turns actionable items into a lightweight to-do list (dopamine sold separately).</p>
+            </div>
+          </div>
+
+          <div style="margin-top:14px; border-top:1px solid var(--line); padding-top:14px;">
+            <p class="tiny" style="margin:0;">
+              Everen answers three questions instantly:
+            </p>
+            <div class="pillRow" aria-label="Who What Why">
+              <span class="pill"><b style="color:var(--text);">Who</b> is it from?</span>
+              <span class="pill"><b style="color:var(--text);">What</b> is being asked?</span>
+              <span class="pill"><b style="color:var(--text);">Why</b> does it matter now?</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <section class="grid2" style="margin-top:18px;">
+        <div class="mini">
+          <h2>Who Everen is for</h2>
+          <p>Managers, directors, and executives drowning in message volume—and anyone who wants fewer missed asks and more high-impact time.</p>
+          <div class="pillRow">
+            <span class="pill">Leadership</span>
+            <span class="pill">High message volume</span>
+            <span class="pill">Decision-heavy roles</span>
+            <span class="pill">Cross-team blockers</span>
+          </div>
+        </div>
+
+        <div class="mini">
+          <h2>Status</h2>
+          <p>Everen is in early validation and design. We're gathering feedback from real leaders to shape the first release.</p>
+          <div class="pillRow">
+            <span class="pill">Early validation</span>
+            <span class="pill">Design partner interviews</span>
+            <span class="pill">Pilot list forming</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="example" id="example">
+        <h2>A 30-second real-world example</h2>
+        <p class="tiny" style="margin:0 0 8px;">
+          You log in at 8:00 AM. Everen shows:
+        </p>
+
+        <div class="timeline" role="list">
+          <div class="step" role="listitem">
+            <div class="badge">3</div>
+            <p>Items needing decisions</p>
+          </div>
+          <div class="step" role="listitem">
+            <div class="badge">2</div>
+            <p>Approvals blocking other people</p>
+          </div>
+          <div class="step" role="listitem">
+            <div class="badge">1</div>
+            <p>Escalation that can't wait</p>
+          </div>
+          <div class="step" role="listitem">
+            <div class="badge">✓</div>
+            <p>Everything else safely deprioritized</p>
+          </div>
+        </div>
+
+        <p class="tiny" style="margin-top:10px;">
+          By 8:20, you've cleared blockers and made decisions. Your team thinks you’re incredibly on top of things.
+          <span style="color:var(--text); font-weight:650;">You are.</span> Everen helped.
+        </p>
+      </section>
+
+      <section class="compare" id="compare">
+        <div class="compareCard">
+          <h3>Copilot</h3>
+          <ul>
+            <li>Great at helping you <b>respond</b> when you ask</li>
+            <li>Useful “AI in the passenger seat”</li>
+            <li>Still leaves you with the “what matters first?” problem</li>
+          </ul>
+        </div>
+
+        <div class="compareCard">
+          <h3>Everen</h3>
+          <ul>
+            <li>Organizes and prioritizes <b>before</b> you touch anything</li>
+            <li>Acts like a “right-hand assistant” who knows the job</li>
+            <li>Helps you <b>lead</b>: decisions, approvals, escalations, blockers</li>
+          </ul>
+        </div>
+      </section>
+
+      
+
+      <div class="footer">
+        <div>
+          <span style="font-weight:750;">Everen</span>
+          <span class="tiny"> — Because staying on top of things shouldn't require superpowers.</span>
+        </div>
+        <div class="tiny">
+          © <span id="year"></span> Everen • Built for leaders
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // set footer year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
